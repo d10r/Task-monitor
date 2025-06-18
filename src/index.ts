@@ -1,9 +1,13 @@
 import { ponder } from "ponder:registry";
-import { account } from "ponder:schema";
+import { sferpOwner } from "ponder:schema";
 
-ponder.on("weth9:Deposit", async ({ event, context }) => {
+ponder.on("SFERP:Transfer", async ({ event, context }) => {
   await context.db
-    .insert(account)
-    .values({ address: event.args.dst, balance: event.args.wad })
-    .onConflictDoUpdate((row) => ({ balance: row.balance + event.args.wad }));
+    .insert(sferpOwner)
+    .values({
+      id: event.transaction.hash,
+      owner: event.args.to,
+      chainId: BigInt(context.chain.id),
+    })
+    .onConflictDoUpdate((row) => ({ owner: event.args.to }));
 });

@@ -1,6 +1,7 @@
 import { onchainTable } from "ponder";
 
-export const account = onchainTable("account", (t) => ({
-  address: t.hex().primaryKey(),
-  balance: t.bigint().notNull(),
+export const sferpOwner = onchainTable("sferp", (t) => ({
+  id: t.hex().primaryKey(),
+  owner: t.hex().notNull(),
+  chainId: t.bigint().notNull(),
 }));
